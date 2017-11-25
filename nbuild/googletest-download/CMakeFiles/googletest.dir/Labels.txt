@@ -1,0 +1,14 @@
+# Target labels
+ googletest
+# Source files and their labels
+/Users/lanza/Projects/tigerc/nbuild/googletest-download/CMakeFiles/googletest
+/Users/lanza/Projects/tigerc/nbuild/googletest-download/CMakeFiles/googletest.rule
+/Users/lanza/Projects/tigerc/nbuild/googletest-download/CMakeFiles/googletest-complete.rule
+/Users/lanza/Projects/tigerc/nbuild/googletest-download/googletest-prefix/src/googletest-stamp/googletest-install.rule
+/Users/lanza/Projects/tigerc/nbuild/googletest-download/googletest-prefix/src/googletest-stamp/googletest-mkdir.rule
+/Users/lanza/Projects/tigerc/nbuild/googletest-download/googletest-prefix/src/googletest-stamp/googletest-download.rule
+/Users/lanza/Projects/tigerc/nbuild/googletest-download/googletest-prefix/src/googletest-stamp/googletest-update.rule
+/Users/lanza/Projects/tigerc/nbuild/googletest-download/googletest-prefix/src/googletest-stamp/googletest-patch.rule
+/Users/lanza/Projects/tigerc/nbuild/googletest-download/googletest-prefix/src/googletest-stamp/googletest-configure.rule
+/Users/lanza/Projects/tigerc/nbuild/googletest-download/googletest-prefix/src/googletest-stamp/googletest-build.rule
+/Users/lanza/Projects/tigerc/nbuild/googletest-download/googletest-prefix/src/googletest-stamp/googletest-test.rule

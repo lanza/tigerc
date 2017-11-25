@@ -12426,6 +12426,7 @@ yyless	nbuild/tiger-lex.c	/^#define yyless(/;"	d	file:
 yyless	nbuild/tiger-lex.c	/^#undef yyless$/;"	d	file:
 yylex_destroy	nbuild/tiger-lex.c	/^int yylex_destroy  (void)$/;"	f
 yylineno	nbuild/tiger-lex.c	/^int yylineno = 1;$/;"	v
+yylval	include/tigerc/Lex/tokens.h	/^YYSTYPE yylval;$/;"	v
 yylval	lib/Lex/driver.c	/^YYSTYPE yylval;$/;"	v
 yymore	nbuild/tiger-lex.c	/^#define yymore(/;"	d	file:
 yyout	nbuild/tiger-lex.c	/^FILE *yyin = (FILE *) 0, *yyout = (FILE *) 0;$/;"	v

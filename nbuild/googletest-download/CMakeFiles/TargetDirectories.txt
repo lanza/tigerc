@@ -1,3 +1,0 @@
-/Users/lanza/Projects/tigerc/nbuild/googletest-download/CMakeFiles/rebuild_cache.dir
-/Users/lanza/Projects/tigerc/nbuild/googletest-download/CMakeFiles/edit_cache.dir
-/Users/lanza/Projects/tigerc/nbuild/googletest-download/CMakeFiles/googletest.dir

@@ -1,6 +1,8 @@
 #ifndef errormsg_h
 #define errormsg_h
 
+#include <tigerc/Support/util.h>
+
 extern bool EM_anyErrors;
 
 void EM_newline(void);

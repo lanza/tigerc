@@ -1,7 +1,7 @@
 #ifndef tokens_h
 #define tokens_h
 
-#include "util.h"
+#include <tigerc/Support/util.h>
 
 typedef union  {
 	int pos;

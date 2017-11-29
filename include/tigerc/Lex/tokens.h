@@ -3,7 +3,7 @@
 
 #include <tigerc/Support/util.h>
 
-typedef union  {
+typedef union {
 	int pos;
 	int ival;
 	string sval;
@@ -53,5 +53,7 @@ YYSTYPE yylval;
 # define FUNCTION 297
 # define VAR 298
 # define TYPE 299
+
+# define ILLEGAL 666
 
 #endif /* tokens_h */

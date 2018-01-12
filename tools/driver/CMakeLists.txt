@@ -1,8 +1,11 @@
-add_executable(tigerc
-  tc1_main.c
-)
+add_executable(tc1 tc1_main.c) 
+add_executable(tigerc driver.c)
 
 target_link_libraries(tigerc
   tigercSupport
   tigercLex
-  )
+)
+target_link_libraries(tc1
+  tigercSupport
+  tigercLex
+)

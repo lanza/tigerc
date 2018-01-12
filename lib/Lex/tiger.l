@@ -1,8 +1,10 @@
+%option yylineno
 %{
 #include <string.h>
-#include <tigerc/Support/util.h>
-#include <tigerc/Lex/tokens.h>
+
 #include <tigerc/Support/errormsg.h>
+#include <tigerc/Support/util.h>
+#include <parse.h>
 
 int charPos=1;
 
@@ -10,6 +12,8 @@ int yywrap(void) {
  charPos = 1;
  return 1;
 } 
+
+YYSTYPE yylval;
 
 void adjust(void) {
  EM_tokPos = charPos;
@@ -24,12 +28,12 @@ void adjust(void) {
 %%
 
 "/*"                               { adjust(); BEGIN(INCOMMENT); }
-<INCOMMENT>"*/"                      { adjust(); BEGIN(INITIAL); }
+<INCOMMENT>"*/"                    { adjust(); BEGIN(INITIAL); }
 <INCOMMENT>([^*]|\n)+|.              /* none */
-<INCOMMENT><<EOF>>                   { adjust(); EM_error(EM_tokPos, "unterminated comment"); return EOF; }
+<INCOMMENT><<EOF>>                 { adjust(); EM_error(EM_tokPos, "unterminated comment"); return EOF; }
 
-\"                               { adjust(); BEGIN(INSTRING); }
-<INSTRING>\"                       { adjust(); BEGIN(INITIAL); return STRING; }
+\"                                 { adjust(); BEGIN(INSTRING); }
+<INSTRING>\"                       { adjust(); BEGIN(INITIAL); yylval.sval = String(yytext); return STRING; }
 <INSTRING>[a-zA-Z]
 <INSTRING><<EOF>>                  { adjust(); EM_error(EM_tokPos, "unterminated string literal"); return EOF; } 
 

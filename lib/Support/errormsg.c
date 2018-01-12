@@ -10,7 +10,7 @@
 #include <tigerc/Support/util.h>
 #include <tigerc/Support/errormsg.h>
 
-bool anyErrors= FALSE;
+bool anyErrors = FALSE;
 
 static string fileName = ""; 
 static int lineNum = 1; 

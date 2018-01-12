@@ -70,7 +70,9 @@ void adjust(void) {
 
 
 and                                { adjust(); return AND; }
+\&                                 { adjust(); return AND; }
 or                                 { adjust(); return OR; }
+\|                                 { adjust(); return OR; }
 assign                             { adjust(); return ASSIGN; }
 array                              { adjust(); return ARRAY; }
 if                                 { adjust(); return IF; }

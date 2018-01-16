@@ -9,8 +9,8 @@ void EM_newline(void);
 
 extern int EM_tokPos;
 
-void EM_error(int, string,...);
-void EM_impossible(string,...);
-void EM_reset(string filename);
+void EM_error(int, const char *, ...);
+void EM_impossible(const char *, ...);
+void EM_reset(const char *filename);
 
 #endif /* errormsg_h */

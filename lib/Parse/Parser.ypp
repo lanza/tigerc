@@ -1,19 +1,27 @@
 %{
-#include <stdio.h>
+#include <cstdio>
 #include <tigerc/Support/util.h>
 #include <tigerc/Support/errormsg.h>
+#include <FlexLexer.h>
 
 int yylex();
-void yyerror(char *s) {
+void yyerror(const char *s) {
   EM_error(EM_tokPos, "%s", s);
 }
+
+FlexLexer *lexer = new yyFlexLexer;
 %}
 
 %union {
   int pos;
   int ival;
-  string sval;
+  char *sval;
 }
+
+%{
+#undef yylex
+#define yylex lexer->yylex
+%}
 
 %right ASSIGN
 %left AND OR

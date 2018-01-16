@@ -1,18 +1,10 @@
 #ifndef util_h
 #define util_h
 
-#include <assert.h>
-
-typedef char *string;
-#ifndef __CPP__
-typedef char bool;
-#endif
-
-#define TRUE 1
-#define FALSE 0
+#include <cassert>
 
 void *checked_malloc(int);
-string String(const char *);
+char *String(const char *);
 
 typedef struct U_boolList_ *U_boolList;
 struct U_boolList_ {

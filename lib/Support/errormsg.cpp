@@ -4,19 +4,17 @@
  *
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstdarg>
 #include <tigerc/Support/util.h>
 #include <tigerc/Support/errormsg.h>
 
-bool anyErrors = FALSE;
+bool anyErrors = false;
 
-static string fileName = ""; 
+static const char *fileName = ""; 
 static int lineNum = 1; 
-int EM_tokPos=0;
-
-extern FILE *yyin;
+int EM_tokPos = 0;
 
 struct intList {
   int i; 
@@ -25,7 +23,7 @@ struct intList {
 typedef struct intList* IntList;
 
 static IntList intList(int i, IntList rest) {
-  IntList l = checked_malloc(sizeof *l);
+  IntList l = (IntList)checked_malloc(sizeof *l);
   l->i = i;
   l->rest = rest;
   return l;
@@ -38,12 +36,12 @@ void EM_newline(void) {
   linePos = intList(EM_tokPos, linePos);
 }
 
-void EM_error(int pos, char *message, ...) {
+void EM_error(int pos, const char *message, ...) {
   va_list ap;
   IntList lines = linePos; 
   int num = lineNum;
  
-  anyErrors = TRUE;
+  anyErrors = true;
   while (lines && lines->i >= pos) {
     lines = lines->rest; 
     num--;
@@ -59,15 +57,15 @@ void EM_error(int pos, char *message, ...) {
   fprintf(stderr, "\n"); 
 }
 
-void EM_reset(string fname) {
-  anyErrors = FALSE; 
+void EM_reset(char *fname) {
+  anyErrors = false; 
   fileName = fname; 
   lineNum = 1;
   linePos = intList(0, NULL);
-  yyin = fopen(fname, "r");
-  if (!yyin) {
-    EM_error(0, "cannot open"); 
-    exit(1);
-  }
+  //yyin = fopen(fname, "r");
+  //if (!yyin) {
+   // EM_error(0, "cannot open"); 
+    //exit(1);
+ // }
 }
 

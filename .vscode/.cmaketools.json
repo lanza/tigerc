@@ -1,0 +1,845 @@
+{
+  "variant": {
+    "label": "Debug",
+    "keywordSettings": {
+      "buildType": "debug"
+    },
+    "description": "Emit debug information without performing optimizations"
+  },
+  "activeEnvironments": [],
+  "codeModel": {
+    "configurations": [
+      {
+        "name": "Debug",
+        "projects": [
+          {
+            "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock",
+            "name": "gmock",
+            "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock",
+            "targets": [
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/libgmockd.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g     -DGTEST_HAS_PTHREAD=1  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/gmock-all.cc"
+                    ]
+                  }
+                ],
+                "fullName": "libgmockd.a",
+                "linkerLanguage": "CXX",
+                "name": "gmock",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock",
+                "type": "STATIC_LIBRARY"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/libgmock_maind.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g     -DGTEST_HAS_PTHREAD=1  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/gmock_main.cc"
+                    ]
+                  }
+                ],
+                "fullName": "libgmock_maind.a",
+                "linkerLanguage": "CXX",
+                "name": "gmock_main",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock",
+                "type": "STATIC_LIBRARY"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest/libgtest_maind.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g     -DGTEST_HAS_PTHREAD=1  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/gtest_main.cc"
+                    ]
+                  }
+                ],
+                "fullName": "libgtest_maind.a",
+                "linkerLanguage": "CXX",
+                "name": "gtest_main",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest",
+                "type": "STATIC_LIBRARY"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest/libgtestd.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g     -DGTEST_HAS_PTHREAD=1  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/gtest-all.cc"
+                    ]
+                  }
+                ],
+                "fullName": "libgtestd.a",
+                "linkerLanguage": "CXX",
+                "name": "gtest",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest",
+                "type": "STATIC_LIBRARY"
+              }
+            ]
+          },
+          {
+            "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build",
+            "name": "googletest-distribution",
+            "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src",
+            "targets": [
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/libgmockd.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g     -DGTEST_HAS_PTHREAD=1  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/gmock-all.cc"
+                    ]
+                  }
+                ],
+                "fullName": "libgmockd.a",
+                "linkerLanguage": "CXX",
+                "name": "gmock",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock",
+                "type": "STATIC_LIBRARY"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/libgmock_maind.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g     -DGTEST_HAS_PTHREAD=1  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/gmock_main.cc"
+                    ]
+                  }
+                ],
+                "fullName": "libgmock_maind.a",
+                "linkerLanguage": "CXX",
+                "name": "gmock_main",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock",
+                "type": "STATIC_LIBRARY"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest/libgtest_maind.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g     -DGTEST_HAS_PTHREAD=1  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/gtest_main.cc"
+                    ]
+                  }
+                ],
+                "fullName": "libgtest_maind.a",
+                "linkerLanguage": "CXX",
+                "name": "gtest_main",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest",
+                "type": "STATIC_LIBRARY"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest/libgtestd.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g     -DGTEST_HAS_PTHREAD=1  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/gtest-all.cc"
+                    ]
+                  }
+                ],
+                "fullName": "libgtestd.a",
+                "linkerLanguage": "CXX",
+                "name": "gtest",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest",
+                "type": "STATIC_LIBRARY"
+              }
+            ]
+          },
+          {
+            "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest",
+            "name": "gtest",
+            "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest",
+            "targets": [
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest/libgtest_maind.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g     -DGTEST_HAS_PTHREAD=1  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/gtest_main.cc"
+                    ]
+                  }
+                ],
+                "fullName": "libgtest_maind.a",
+                "linkerLanguage": "CXX",
+                "name": "gtest_main",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest",
+                "type": "STATIC_LIBRARY"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest/libgtestd.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g     -DGTEST_HAS_PTHREAD=1  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/gtest-all.cc"
+                    ]
+                  }
+                ],
+                "fullName": "libgtestd.a",
+                "linkerLanguage": "CXX",
+                "name": "gtest",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest",
+                "type": "STATIC_LIBRARY"
+              }
+            ]
+          },
+          {
+            "buildDirectory": "/Users/lanza/Projects/tigerc/build",
+            "name": "tigerc",
+            "sourceDirectory": "/Users/lanza/Projects/tigerc",
+            "targets": [
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/lib/Parse/libtigercParsed.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/lib/Parse",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/include"
+                      }
+                    ],
+                    "isGenerated": true,
+                    "language": "CXX",
+                    "sources": [
+                      "../../build/lib/Parse/Parser.cpp"
+                    ]
+                  }
+                ],
+                "fullName": "libtigercParsed.a",
+                "linkerLanguage": "CXX",
+                "name": "tigercParse",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/lib/Parse",
+                "type": "STATIC_LIBRARY"
+              },
+              {
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/lib/Parse",
+                "fileGroups": [
+                  {
+                    "isGenerated": false,
+                    "sources": [
+                      "Parser.ypp"
+                    ]
+                  },
+                  {
+                    "isGenerated": true,
+                    "sources": [
+                      "../../build/lib/Parse/CMakeFiles/Parser",
+                      "../../build/lib/Parse/CMakeFiles/Parser.rule"
+                    ]
+                  }
+                ],
+                "fullName": "Parser",
+                "name": "Parser",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/lib/Parse",
+                "type": "UTILITY"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/lib/Lex/libtigercLexd.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/lib/Lex",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/include"
+                      }
+                    ],
+                    "isGenerated": true,
+                    "language": "CXX",
+                    "sources": [
+                      "../../build/lib/Lex/Lexer.cpp"
+                    ]
+                  }
+                ],
+                "fullName": "libtigercLexd.a",
+                "linkerLanguage": "CXX",
+                "name": "tigercLex",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/lib/Lex",
+                "type": "STATIC_LIBRARY"
+              },
+              {
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/lib/Lex",
+                "fileGroups": [
+                  {
+                    "isGenerated": false,
+                    "sources": [
+                      "Lexer.flex"
+                    ]
+                  },
+                  {
+                    "isGenerated": true,
+                    "sources": [
+                      "../../build/lib/Lex/CMakeFiles/Lexer",
+                      "../../build/lib/Lex/CMakeFiles/Lexer.rule"
+                    ]
+                  }
+                ],
+                "fullName": "Lexer",
+                "name": "Lexer",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/lib/Lex",
+                "type": "UTILITY"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/lib/Support/libtigercSupportd.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/lib/Support",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "errormsg.cpp",
+                      "util.cpp"
+                    ]
+                  }
+                ],
+                "fullName": "libtigercSupportd.a",
+                "linkerLanguage": "CXX",
+                "name": "tigercSupport",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/lib/Support",
+                "type": "STATIC_LIBRARY"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/tools/driver/tc1"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/tools/driver",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "tc1_main.cpp"
+                    ]
+                  }
+                ],
+                "fullName": "tc1",
+                "linkLanguageFlags": "-g",
+                "linkLibraries": "../../lib/Support/libtigercSupportd.a ../../lib/Lex/libtigercLexd.a ../../lib/Support/libtigercSupportd.a -ll",
+                "linkerLanguage": "CXX",
+                "name": "tc1",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/tools/driver",
+                "type": "EXECUTABLE"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/tools/driver/tigerc"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/tools/driver",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "driver.cpp"
+                    ]
+                  }
+                ],
+                "fullName": "tigerc",
+                "linkLanguageFlags": "-g",
+                "linkLibraries": "../../lib/Support/libtigercSupportd.a ../../lib/Lex/libtigercLexd.a ../../lib/Support/libtigercSupportd.a -ll",
+                "linkerLanguage": "CXX",
+                "name": "tigerc",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/tools/driver",
+                "type": "EXECUTABLE"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/libgmockd.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g     -DGTEST_HAS_PTHREAD=1  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/gmock-all.cc"
+                    ]
+                  }
+                ],
+                "fullName": "libgmockd.a",
+                "linkerLanguage": "CXX",
+                "name": "gmock",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock",
+                "type": "STATIC_LIBRARY"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/libgmock_maind.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g     -DGTEST_HAS_PTHREAD=1  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/gmock_main.cc"
+                    ]
+                  }
+                ],
+                "fullName": "libgmock_maind.a",
+                "linkerLanguage": "CXX",
+                "name": "gmock_main",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock",
+                "type": "STATIC_LIBRARY"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest/libgtest_maind.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g     -DGTEST_HAS_PTHREAD=1  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/gtest_main.cc"
+                    ]
+                  }
+                ],
+                "fullName": "libgtest_maind.a",
+                "linkerLanguage": "CXX",
+                "name": "gtest_main",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest",
+                "type": "STATIC_LIBRARY"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest/libgtestd.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/googletest-build/googlemock/gtest",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g     -DGTEST_HAS_PTHREAD=1  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/gtest-all.cc"
+                    ]
+                  }
+                ],
+                "fullName": "libgtestd.a",
+                "linkerLanguage": "CXX",
+                "name": "gtest",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest",
+                "type": "STATIC_LIBRARY"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/unittests/Lex/testLex"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/unittests/Lex",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock/include"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/include"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "testLex.cpp"
+                    ]
+                  }
+                ],
+                "fullName": "testLex",
+                "linkLanguageFlags": "-g",
+                "linkLibraries": "../../googletest-build/googlemock/gtest/libgtest_maind.a ../../lib/Parse/libtigercParsed.a ../../lib/Lex/libtigercLexd.a ../../lib/Parse/libtigercParsed.a ../../googletest-build/googlemock/gtest/libgtestd.a ../../lib/Support/libtigercSupportd.a -ll",
+                "linkerLanguage": "CXX",
+                "name": "testLex",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/unittests/Lex",
+                "type": "EXECUTABLE"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/unittests/Parse/testParse"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/unittests/Parse",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock/include"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/include"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "testParse.cpp"
+                    ]
+                  }
+                ],
+                "fullName": "testParse",
+                "linkLanguageFlags": "-g",
+                "linkLibraries": "../../lib/Parse/libtigercParsed.a ../../googletest-build/googlemock/gtest/libgtest_maind.a ../../lib/Lex/libtigercLexd.a ../../googletest-build/googlemock/gtest/libgtestd.a ../../lib/Support/libtigercSupportd.a -ll",
+                "linkerLanguage": "CXX",
+                "name": "testParse",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/unittests/Parse",
+                "type": "EXECUTABLE"
+              },
+              {
+                "artifacts": [
+                  "/Users/lanza/Projects/tigerc/build/unittests/Utils/libtestingUtilsd.a"
+                ],
+                "buildDirectory": "/Users/lanza/Projects/tigerc/build/unittests/Utils",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-g  ",
+                    "includePath": [
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/include"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googlemock/include"
+                      },
+                      {
+                        "isSystem": true,
+                        "path": "/Users/lanza/Projects/tigerc/build/googletest-src/googletest/include"
+                      },
+                      {
+                        "path": "/Users/lanza/Projects/tigerc/build/include"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "testingUtils.cpp"
+                    ]
+                  }
+                ],
+                "fullName": "libtestingUtilsd.a",
+                "linkerLanguage": "CXX",
+                "name": "testingUtils",
+                "sourceDirectory": "/Users/lanza/Projects/tigerc/unittests/Utils",
+                "type": "STATIC_LIBRARY"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "cookie": "0.3078222577075287",
+    "inReplyTo": "codemodel",
+    "type": "reply"
+  }
+}

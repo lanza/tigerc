@@ -1,5 +1,5 @@
-add_executable(tc1 tc1_main.c) 
-add_executable(tigerc driver.c)
+add_executable(tc1 tc1_main.cpp) 
+add_executable(tigerc driver.cpp)
 
 target_link_libraries(tigerc
   tigercSupport

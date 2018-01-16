@@ -1,13 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_BUILD_TYPE Debug)
 
-project(tigerc)
+project(tigerc CXX)
 
 include_directories(
-  "${CMAKE_SOURCE_DIR}/include" 
-  ${CMAKE_BINARY_DIR}/lib/Lex/
-  ${CMAKE_BINARY_DIR}/lib/Parse/
+  ${CMAKE_SOURCE_DIR}/include 
 )
 
 enable_testing()

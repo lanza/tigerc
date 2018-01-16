@@ -1,4 +1,4 @@
 add_library(tigercSupport
-  errormsg.c
-  util.c
+  errormsg.cpp
+  util.cpp
   )

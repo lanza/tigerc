@@ -1,0 +1,99 @@
+create_forwarder cos
+create_forwarder sin
+create_forwarder tan
+create_forwarder acos
+
+
+
+
+
+
+
+
+create_forwarder asin
+create_forwarder atan
+create_forwarder atan2
+
+// hyperbolic
+create_forwarder acosh
+create_forwarder asinh
+create_forwarder atanh
+create_forwarder cosh
+create_forwarder sinh
+create_forwarder tanh
+
+// exponential and logarithmic
+create_forwarder exp
+create_forwarder exp2
+create_forwarder expm1
+create_forwarder frexp
+create_forwarder ilogb
+create_forwarder ldexp
+create_forwarder log
+create_forwarder log10
+create_forwarder log1p
+create_forwarder log2
+create_forwarder logb
+create_forwarder modf
+create_forwarder scalbn
+create_forwarder scalbln
+
+// power and absolute-value functions
+create_forwarder cbrt
+create_forwarder fabs
+create_forwarder hypot
+create_forwarder pow
+create_forwarder sqrt
+
+// error and gamma functions
+create_forwarder erf
+create_forwarder erfc
+create_forwarder lgamma
+create_forwarder tgamma
+
+// nearest integer functions
+create_forwarder ceil
+create_forwarder floor
+create_forwarder nearbyint
+create_forwarder rint
+create_forwarder lrint
+create_forwarder llrint
+create_forwarder round
+create_ext_forwarder sincos
+create_forwarder lround
+create_forwarder llround
+create_forwarder trunc
+
+// remainder functions
+create_forwarder fmod
+create_forwarder remainder
+create_forwarder remquo
+
+// manipulation functions
+create_forwarder copysign
+create_forwarder nan
+create_forwarder nextafter
+create_forwarder nexttoward
+
+// maximum, minimum nad positive difference functions
+create_forwarder fdim
+create_forwarder fmax
+create_forwarder fmin
+
+// floating multiply-add
+create_forwarder fma 
+
+// apple extensions to the C standard 
+create_single_forwarder __exp10f
+create_single_forwarder __exp10
+create_single_forwarder __sincosf
+create_single_forwarder __sincos
+create_single_forwarder __cospif
+create_single_forwarder __cospi
+create_single_forwarder __sinpif
+create_single_forwarder __sinpi
+create_single_forwarder __tanpif
+create_single_forwarder __tanpi
+//create_single_forwarder __sincospif
+//create_single_forwarder __sincospi 
+

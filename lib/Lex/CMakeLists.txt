@@ -7,7 +7,7 @@ file(MAKE_DIRECTORY
 
 add_custom_target(Lexer ALL 
   COMMAND 
-    /usr/local/bin/flex 
+    /usr/local/bin/flex++
     -o ${CMAKE_BINARY_DIR}/lib/Lex/Lexer.cpp 
     ${CMAKE_SOURCE_DIR}/lib/Lex/Lexer.l
   BYPRODUCTS 

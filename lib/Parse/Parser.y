@@ -26,25 +26,23 @@
   #include <tigerc/Parse/Parser.h>
   #include <tigerc/Lex/Lexer.h>
 
-  static tlang::Parser::symbol_type yylex(tlang::Lexer &lexer, tlang::Interpreter &driver) {
+  static tlang::Parser::symbol_type yylex(tlang::Lexer &lexer) {
     return lexer.get_next_token();
   }
 
   //maybe define a macro that will do this? 
-  // #define yylex(x, y) scanner.get_next_token()
+  // #define yylex(x) scanner.get_next_token()
 
   using namespace tlang;
 }
 
 %lex-param { tlang::Lexer &lexer }
-%lex-param { tlang::Interpreter &driver }
 %parse-param { tlang::Lexer &lexer }
-%parse-param { tlang::Interpreter &driver }
 %locations
 /*%define parse.trace      used as ${debug_flag} in cmake */
 %define parse.error verbose
 
-%define api.token.prefix {TOKEN_}
+%define api.token.prefix {}
 
 /*%type< tlang::Command > command; */
 /*%type< std::vector<uint64_t> > arguments; */
@@ -55,7 +53,7 @@
 %left PLUS MINUS
 %left TIMES DIVIDE
 
-%token EOF 0 "end of file"
+%token ENDOFFILE 0 "end of file"
 %token <std::string> ID STRING "string";
 %token <int> INT "int"; 
 %token LPAREN "leftparen";

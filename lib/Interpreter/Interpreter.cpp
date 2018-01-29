@@ -6,8 +6,8 @@
 using namespace tlang;
 
 Interpreter::Interpreter() : 
-  m_lexer(*this),
-  m_parser(m_lexer, *this),
+  m_lexer(),
+  m_parser(m_lexer),
   m_location(0) { }
 
 int Interpreter::parse() {

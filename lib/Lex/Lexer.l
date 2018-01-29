@@ -16,8 +16,9 @@ int charPos=1;
 
 #define ADJUST EM_tokPos = charPos; charPos += YYLeng
 
-#define yyterminate() ;
+#define yyterminate() tlang::Parser::make_ENDOFFILE(tlang::location());
 #define YY_USER_ACTION ;
+#define YY_NO_UNISTD_H
 
 %}
 
@@ -25,7 +26,8 @@ int charPos=1;
 %option noyywrap
 %option c++
 %option yyclass="Lexer"
-%option prefix="tlang"
+%option prefix="tlang_"
+%option debug
 
 %x INCOMMENT
 %x INSTRING
@@ -36,7 +38,7 @@ int charPos=1;
 <INCOMMENT>"*/"                    { ADJUST(); BEGIN(INITIAL); }
 <INCOMMENT>([^*]|\n)+|.              /* none */
 <INCOMMENT><<EOF>>                 { ADJUST(); EM_error(EM_tokPos, "unterminated comment"); 
-                                     return tlang::Parser::make_EOF(tlang::location()); 
+                                     return tlang::Parser::make_ENDOFFILE(tlang::location()); 
                                    }
 
 \"                                 { ADJUST(); BEGIN(INSTRING); }
@@ -44,8 +46,9 @@ int charPos=1;
                                      return tlang::Parser::make_STRING(yytext, tlang::location()); 
                                    } 
 <INSTRING>[a-zA-Z]
+<INSTRING>" "
 <INSTRING><<EOF>>                  { ADJUST(); EM_error(EM_tokPos, "unterminated string literal"); 
-                                     tlang::Parser::make_EOF(tlang::location());
+                                     tlang::Parser::make_ENDOFFILE(tlang::location());
                                    }
 
 " "                                { ADJUST(); continue; }
@@ -107,8 +110,9 @@ var                                { ADJUST(); return tlang::Parser::make_VAR(tl
 type                               { ADJUST(); return tlang::Parser::make_TYPE(tlang::location()); }
 
 [a-zA-Z][a-zA-Z0-9_]*              { ADJUST(); 
-                                     tlang::Parser::make_STRING(yytext, tlang::location());
+                                     return tlang::Parser::make_ID(yytext, tlang::location());
                                    }
+<<EOF>>                            { ADJUST(); return tlang::Parser::make_ENDOFFILE(tlang::location()); }
 
  /* else */
 .                                  { ADJUST(); EM_error(EM_tokPos, "illegal token"); 

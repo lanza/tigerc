@@ -30,12 +30,12 @@ namespace tlang {
 
   class Lexer : public yyFlexLexer {
     public:
-      Lexer(Interpreter &driver) : m_driver(driver) {}
+      Lexer(std::istream* is = 0, std::ostream* os = 0) : yyFlexLexer(is,os) {}
       virtual ~Lexer() {}
       virtual tlang::Parser::symbol_type get_next_token();
 
     private:
-      Interpreter &m_driver;
+      //Interpreter &m_driver;
   };
 }
 

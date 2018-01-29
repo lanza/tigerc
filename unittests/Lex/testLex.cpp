@@ -1,363 +1,252 @@
 #include <tigerc/Support/errormsg.h>
 #include <tigerc/Support/util.h>
+
 #include <tigerc/Parse/Parser.h>
+#include <tigerc/Lex/Lexer.h>
+#include <tigerc/Interpreter/Interpreter.h>
+
+#include "../Utils/testingUtils.h"
+
 #include <gmock/gmock.h>
-#include <FlexLexer.h>
 
 #include <string>
 #include <sstream>
 #include <iostream>
 #include <fstream>
 
-extern YYSTYPE yylval;
-
 using namespace testing; 
+
+typedef tlang::Parser::token::yytokentype Token;
+typedef tlang::Parser::symbol_type LexerOutput;
 
 class LexerTest: public ::testing::Test {
 
 public:
-  LexerTest() {
-    lexer = new yyFlexLexer;
-  }
+  LexerTest() { }
   void ScanString(std::string string) {
-    std::stringstream ss;
-    ss.str(string);
-    lexer->yyrestart(&ss); 
+    std::stringstream* ss = new std::stringstream;
+    ss->str(string);
+    lexer = new tlang::Lexer(ss);
   }
   void ScanFile(std::string string) {
-    std::ifstream ifs(string);
-    lexer->yyrestart(&ifs);
-
+    std::ifstream* ifs = new std::ifstream(string);
+    lexer = new tlang::Lexer(ifs);
   }
-  int GetToken() { return lexer->yylex(); } 
+  Token GetToken() { return lexer->get_next_token().token(); } 
+  LexerOutput GetOutput() { return lexer->get_next_token(); }
 private:
-  FlexLexer *lexer; 
+  tlang::Lexer *lexer; 
 };
 
 #define TESTLEX(name) TEST_F(LexerTest, name)
+#define AssertNextToken(name) ASSERT_THAT(GetToken(), Eq(name))
+#define AssertNextTokenNot(name) ASSERT_THAT(GetToken(), Ne(name))
 
-TESTLEX(ForStringReturnsForToken) {
-  ScanString("for");
-  int output = GetToken();
-  ASSERT_THAT(output, Eq(FOR));
+void AssertNextOutputInt(LexerOutput output, Token name, int value) {
+  ASSERT_THAT(output.token(), Eq(name)); 
+  ASSERT_THAT(output.value.as<int>(), Eq(value));
 }
 
+TESTLEX(ForStringReturnsForToken) {
+  ScanString("for"); 
+  AssertNextToken(Token::FOR);
+}
 TESTLEX(ForDoStringReturnsForTokenThenDoToken) {
   ScanString("for do");
-  int output = GetToken();
-  ASSERT_THAT(output, Eq(FOR));
-  output = GetToken();
-  ASSERT_THAT(output, Eq(DO)); 
+  AssertNextToken(Token::FOR);
+  AssertNextToken(Token::DO);
 }
 
 TESTLEX(OfBreakNilFunctionVarTypeMatchesTokens) {
   ScanString("of break nil function var type");
-  int output = GetToken();
-  ASSERT_THAT(output, Eq(OF));
-  output = GetToken();
-  ASSERT_THAT(output, Eq(BREAK)); 
-  output = GetToken();
-  ASSERT_THAT(output, Eq(NIL)); 
-  output = GetToken();
-  ASSERT_THAT(output, Eq(FUNCTION)); 
-  output = GetToken();
-  ASSERT_THAT(output, Eq(VAR)); 
-  output = GetToken();
-  ASSERT_THAT(output, Eq(TYPE)); 
+  AssertNextToken(Token::OF);
+  AssertNextToken(Token::BREAK);
+  AssertNextToken(Token::NIL);
+  AssertNextToken(Token::FUNCTION);
+  AssertNextToken(Token::VAR);
+  AssertNextToken(Token::TYPE);
 }
 
 TESTLEX(AndOrAssignArrayIfThenElseWhileAllWork) {
   ScanString("and or assign array if then else while");
-  int output = GetToken();
-  ASSERT_THAT(output, Eq(AND));
-  output = GetToken();
-  ASSERT_THAT(output, Eq(OR)); 
-  output = GetToken();
-  ASSERT_THAT(output, Eq(ASSIGN)); 
-  output = GetToken();
-  ASSERT_THAT(output, Eq(ARRAY)); 
-  output = GetToken();
-  ASSERT_THAT(output, Eq(IF)); 
-  output = GetToken();
-  ASSERT_THAT(output, Eq(THEN)); 
-  output = GetToken();
-  ASSERT_THAT(output, Eq(ELSE)); 
-  output = GetToken();
-  ASSERT_THAT(output, Eq(WHILE)); 
+  AssertNextToken(Token::AND);
+  AssertNextToken(Token::OR);
+  AssertNextToken(Token::ASSIGN);
+  AssertNextToken(Token::ARRAY);
+  AssertNextToken(Token::IF);
+  AssertNextToken(Token::THEN);
+  AssertNextToken(Token::ELSE);
+  AssertNextToken(Token::WHILE);
 }
 
 TESTLEX(NumberReturnsNumberToken) {
   ScanString("41234 4121512 44241 5555");
   for (int i = 0; i < 4; i++) {
-    int token = GetToken();
-    ASSERT_THAT(token, Eq(INT));
+    AssertNextToken(Token::INT);
   }
+  AssertNextToken(Token::ENDOFFILE);
 }
 
 TESTLEX(CommaReturnsCommaToken) {
   ScanString(", , , ");
-  int token;
-  int count = 0;
-  while ((token = GetToken())) {
-    ASSERT_THAT(token, Eq(COMMA));
-    count++;
-  }
-  ASSERT_THAT(count, Eq(3));
+  AssertNextToken(Token::COMMA);
+  AssertNextToken(Token::COMMA);
+  AssertNextToken(Token::COMMA);
+  AssertNextToken(Token::ENDOFFILE);
 }
 
 TESTLEX(JustSpacesReturnsNoTokensExceptEOF) {
   ScanString("    ");
-  int token = GetToken();
-  ASSERT_THAT(token, Eq(0));
+  AssertNextToken(Token::ENDOFFILE);
 }
-
-TESTLEX(LoadingAFileWorksUsingTestFileDotTig) {
-  ScanFile("/Users/lanza/Projects/tigerc/unittests/Lex/testFile.tig");
-  int token;
-  token = GetToken();
-  ASSERT_THAT(token, Eq(IF));
-  token = GetToken();
-  ASSERT_THAT(token, Eq(LET));
-  token = GetToken();
-  ASSERT_THAT(token, Eq(COMMA));
-}
-
 
 TESTLEX(IgnoresCommentsInLineOneOfTest1) {
   ScanFile("/Users/lanza/Projects/tigerc/unittests/testcases/test1.tig");
-  int token = GetToken();
-  ASSERT_THAT(token, Eq(LET)); 
+  AssertNextToken(Token::LET);
 }
 
 TESTLEX(IgnoresTabs) {
   ScanString("\tlet \tin");
-  int token = GetToken();
-  ASSERT_THAT(token, Eq(LET));
-  token = GetToken();
-  ASSERT_THAT(token, Eq(IN));
+  AssertNextToken(Token::LET);
+  AssertNextToken(Token::IN);
+  AssertNextToken(Token::ENDOFFILE);
 }
 
 TESTLEX(ParsesEqualSign) {
   ScanString(" = = = ");
-  for (int i = 0; i < 3; i++) {
-    int token = GetToken();
-    ASSERT_THAT(token, Eq(EQ));
-  }
-  int token = GetToken();
-  ASSERT_THAT(token, Eq(0));
+  AssertNextToken(Token::EQ);
+  AssertNextToken(Token::EQ);
+  AssertNextToken(Token::EQ);
+  AssertNextToken(Token::ENDOFFILE);
 }
 
 TESTLEX(ParsesAllLowercaseIDsProperly) {
   ScanString("\tmuffin = riley");
-  int token = GetToken();
-  ASSERT_THAT(token, Eq(ID));
-  token = GetToken();
-  ASSERT_THAT(token, Eq(EQ));
-  token = GetToken();
-  ASSERT_THAT(token, Eq(ID));
-  token = GetToken();
-  ASSERT_THAT(token, Eq(0));
+  AssertNextToken(Token::ID);
+  AssertNextToken(Token::EQ);
+  AssertNextToken(Token::ID);
 }
 
 TESTLEX(ParsesColonLRBrackets) {
   ScanString(" muffin : [10] :=");
-  int token;
-  token = GetToken();
-  ASSERT_THAT(token, Eq(ID));
-  token = GetToken();
-  ASSERT_THAT(token, Eq(COLON));
-  token = GetToken();
-  ASSERT_THAT(token, Eq(LBRACK));
-  token = GetToken();
-  ASSERT_THAT(token, Eq(INT));
-  token = GetToken();
-  ASSERT_THAT(token, Eq(RBRACK));
-  token = GetToken();
-  ASSERT_THAT(token, Eq(ASSIGN));
-  token = GetToken();
-  ASSERT_THAT(token, Eq(0));
+  AssertNextToken(Token::ID);
+  AssertNextToken(Token::COLON);
+  AssertNextToken(Token::LBRACK);
+  AssertNextToken(Token::INT);
+  AssertNextToken(Token::RBRACK);
+  AssertNextToken(Token::ASSIGN);
+  AssertNextToken(Token::ENDOFFILE);
 }
 
 
 TESTLEX(Test1LexesProperly) {
   ScanFile("/Users/lanza/Projects/tigerc/unittests/testcases/test1.tig");
-  int token; 
-  int tokens[] = { LET, TYPE, ID, EQ, ARRAY, OF, ID, VAR, ID, COLON, ID, ASSIGN, ID, LBRACK, INT, RBRACK, OF, INT, IN, ID, END };
-  int index = 0;
-  while ((token = GetToken())) {
-    ASSERT_THAT(token, Eq(tokens[index]));
-    index++;
-  }
+  AssertNextToken(Token::LET);
+  AssertNextToken(Token::TYPE);
+  AssertNextToken(Token::ID);
+  AssertNextToken(Token::EQ);
+  AssertNextToken(Token::ARRAY);
+  AssertNextToken(Token::OF);
+  AssertNextToken(Token::ID);
+  AssertNextToken(Token::VAR);
+  AssertNextToken(Token::ID);
+  AssertNextToken(Token::COLON);
+  AssertNextToken(Token::ID);
+  AssertNextToken(Token::ASSIGN);
+  AssertNextToken(Token::ID);
+  AssertNextToken(Token::LBRACK);
+  AssertNextToken(Token::INT);
+  AssertNextToken(Token::RBRACK);
+  AssertNextToken(Token::OF);
+  AssertNextToken(Token::INT);
+  AssertNextToken(Token::IN);
+  AssertNextToken(Token::ID);
+  AssertNextToken(Token::END);
 }
-
-#define a_tok_equal(x) ASSERT_THAT(token, Eq(x));
-#define a_tok_nequal(x) ASSERT_THAT(token, Ne(x));
 
 TESTLEX(LexLRBrace) {
   ScanString(" { }");
-  int token;
-  token = GetToken();
-  a_tok_equal(LBRACE);
-  token = GetToken();
-  a_tok_equal(RBRACE);
+  AssertNextToken(Token::LBRACE);
+  AssertNextToken(Token::RBRACE);
 }
 
 TESTLEX(LexPeriod) {
   ScanString(" . muffin.age ");
-  int token;
-  token = GetToken();
-  a_tok_equal(DOT);
-  token = GetToken();
-  a_tok_equal(ID);
-  token = GetToken();
-  a_tok_equal(DOT);
-  token = GetToken();
-  a_tok_equal(ID);
+  AssertNextToken(Token::DOT);
+  AssertNextToken(Token::ID);
+  AssertNextToken(Token::DOT);
+  AssertNextToken(Token::ID);
 }
 TESTLEX(LexSemicolon) {
   ScanString(" ; muffin;age ;");
-  int token;
-  token = GetToken();
-  a_tok_equal(SEMICOLON);
-  token = GetToken();
-  a_tok_equal(ID);
-  token = GetToken();
-  a_tok_equal(SEMICOLON);
-  token = GetToken();
-  a_tok_equal(ID);
-  token = GetToken();
-  a_tok_equal(SEMICOLON);
+  AssertNextToken(Token::SEMICOLON);
+  AssertNextToken(Token::ID);
+  AssertNextToken(Token::SEMICOLON);
+  AssertNextToken(Token::ID);
+  AssertNextToken(Token::SEMICOLON);
 }
 TESTLEX(LexMathematicalOperators) {
   ScanString("+ - * / != < > >= <=");
-  int token;
-  token = GetToken();
-  a_tok_equal(PLUS);
-  token = GetToken();
-  a_tok_equal(MINUS);
-  token = GetToken();
-  a_tok_equal(TIMES);
-  token = GetToken();
-  a_tok_equal(DIVIDE);
-  token = GetToken();
-  a_tok_equal(NEQ);
-  token = GetToken();
-  a_tok_equal(LT);
-  token = GetToken();
-  a_tok_equal(GT);
-  token = GetToken();
-  a_tok_equal(GE); 
-  token = GetToken();
-  a_tok_equal(LE); 
+  AssertNextToken(Token::PLUS);
+  AssertNextToken(Token::MINUS);
+  AssertNextToken(Token::TIMES);
+  AssertNextToken(Token::DIVIDE);
+  AssertNextToken(Token::NEQ);
+  AssertNextToken(Token::LT);
+  AssertNextToken(Token::GT);
+  AssertNextToken(Token::GE);
+  AssertNextToken(Token::LE);
 }
 
 TESTLEX(LexString) {
   ScanString(" \" muffin is a dogadoogle \"");
-  int token;
-  token = GetToken();
-  a_tok_equal(STRING);
-  token = GetToken();
-  a_tok_equal(0);
+  AssertNextToken(Token::STRING);
+  AssertNextToken(Token::ENDOFFILE);
 }
 
-TESTLEX(TestFileTwoReturnsNoIllegalTokens) {
-  const int SIZE = 1;
-  const char *files[SIZE] = {
-    "/Users/lanza/Projects/tigerc/unittests/testcases/test2.tig",
+TESTLEX(TestFilesTwoAndThreeReturnNoIllegalTokens) {
+  std::vector<std::string> files = {
+    "test2.tig",
+    "test3.tig",
+    "test4.tig",
+    "test5.tig",
+    "test9.tig",
   };
-  for (int i = 0; i < SIZE; i++) {
-    ScanFile(files[i]);
-    int token;
-
-    while ((token = GetToken())) {
-      ASSERT_THAT(token, Ne(666));
-    }
-  }
-}
-
-TESTLEX(TestFileThreeReturnsNoIllegalTokens) {
-  ScanFile("/Users/lanza/Projects/tigerc/unittests/testcases/test3.tig");
-  int token;
-
-  while ((token = GetToken())) {
-    ASSERT_THAT(token, Ne(666));
+  for (auto s : files) {
+    auto f = PathFromFilename(s);
+    ScanFile(f);
+    Token t;
+    while ((t = GetToken()) != Token::ENDOFFILE) 
+      ASSERT_THAT(t, Ne(Token::ILLEGAL));
   }
 }
 
 TESTLEX(LexParens) {
   ScanString(" ( muffin dog )");
-  int token;
-  token = GetToken();
-  a_tok_equal(LPAREN);
-  token = GetToken();
-  a_tok_equal(ID);
-  token = GetToken();
-  a_tok_equal(ID);
-  token = GetToken();
-  a_tok_equal(RPAREN);
-  token = GetToken();
-  a_tok_equal(0);
+  AssertNextToken(Token::LPAREN);
+  AssertNextToken(Token::ID);
+  AssertNextToken(Token::ID);
+  AssertNextToken(Token::RPAREN);
 }
 
-
-TESTLEX(TestFileFourReturnsNoIllegalTokens) {
-  ScanFile("/Users/lanza/Projects/tigerc/unittests/testcases/test4.tig");
-  int token;
-
-  while ((token = GetToken())) {
-    ASSERT_THAT(token, Ne(666));
-  } 
-}
-
-
-TESTLEX(TestFileFiveReturnsNoIllegalTokens) {
-  ScanFile("/Users/lanza/Projects/tigerc/unittests/testcases/test5.tig");
-  int token;
-
-  while ((token = GetToken())) {
-    ASSERT_THAT(token, Ne(666));
-  } 
-}
-
-TESTLEX(TestFileNineReturnsNoIllegalTokens) {
-  ScanFile("/Users/lanza/Projects/tigerc/unittests/testcases/test9.tig");
-  int token;
-
-  while ((token = GetToken())) {
-    ASSERT_THAT(token, Ne(666));
-  } 
-}
-
-char *PathFromFilename(const char *filename) {
-  static const char *prefix = "/Users/lanza/Projects/tigerc/unittests/testcases/";
-  char *dest = (char *)checked_malloc(strlen(prefix) + strlen(filename) + 1);
-  strcpy(dest, prefix);
-  strcat(dest, filename);
-  return dest; 
-}
-
-TEST(testTestingUtils, PathFromFilenameWorks) {
-  char *filename = PathFromFilename("test9.tig"); 
-  ASSERT_THAT(strcmp(filename, "/Users/lanza/Projects/tigerc/unittests/testcases/test9.tig"), 0);
-} 
-
+/*
 TESTLEX(TestNumbersAreStored) { 
   // if (10 > 20) then 30 else 40
-  char *filename = PathFromFilename("test8.tig");
+  std::string filename = PathFromFilename("test8.tig");
   ScanFile(filename);
 
-  int token;
-
-  token = GetToken(); a_tok_equal(IF);
-  token = GetToken(); a_tok_equal(LPAREN);
-  token = GetToken(); a_tok_equal(INT); ASSERT_THAT(yylval.ival, Eq(10));
-  token = GetToken(); a_tok_equal(GT);
-  token = GetToken(); a_tok_equal(INT); ASSERT_THAT(yylval.ival, Eq(20));
-  token = GetToken(); a_tok_equal(RPAREN);
-  token = GetToken(); a_tok_equal(THEN);
-  token = GetToken(); a_tok_equal(INT); ASSERT_THAT(yylval.ival, Eq(30));
-  token = GetToken(); a_tok_equal(ELSE);
-  token = GetToken(); a_tok_equal(INT); ASSERT_THAT(yylval.ival, Eq(40)); 
+  LexerOutput Output;
+  AssertNextToken(Token::IF);
+  Output = GetOutput();
+  AssertNextToken(Output, Token::LPAREN);
+  AssertNextOutputInt(Token::INT, 10);
+  AssertNextToken(Token::GT);
+  AssertNextOutputInt(Token::INT, 20);
+  AssertNextToken(Token::RPAREN);
+  AssertNextToken(Token::THEN);
+  AssertNextOutputInt(Token::INT, 30);
+  AssertNextToken(Token::ELSE);
+  AssertNextOutputInt(Token::INT, 40);
 }
 
 
@@ -389,6 +278,7 @@ TESTLEX(TestNumbersAreBeingCheckedProperly) {
 #define StartFile(name) ScanFile(PathFromFilename(name))
 
 TestLex(StringsAreStoredProperly) {
+  */
   /* let
    *	 type rectype = {name:string, age:int}
    *	 var rec1:rectype := rectype {name="Nobody", age=1000}
@@ -397,6 +287,7 @@ TestLex(StringsAreStoredProperly) {
    *	 rec1
    * end
    */ 
+  /*
   StartFile("test3.tig");
 
   int token;
@@ -416,7 +307,7 @@ TestLex(StringsAreStoredProperly) {
   ExpectNextTok(RBRACE);
 }
 
-
+*/
 
 
 

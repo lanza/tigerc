@@ -1,43 +1,53 @@
+#include <tigerc/Support/errormsg.h>
+#include <tigerc/Support/util.h>
+
+#include <tigerc/Parse/Parser.h>
+#include <tigerc/Lex/Lexer.h>
+#include <tigerc/Interpreter/Interpreter.h>
+
+#include "../Utils/testingUtils.h"
 
 #include <gmock/gmock.h>
-#include "../Utils/testingUtils.h"
+
 #include <sstream>
 #include <string>
 #include <iostream>
 #include <fstream>
 
-extern int yyparse();
-extern int yydebug; 
-
 using namespace testing;
+
+typedef tlang::Parser::token::yytokentype Token;
+typedef tlang::Parser::symbol_type LexerOutput;
 
 class ParserTest: public ::testing::Test {
 
 public:
-  ParserTest() {
-    lexer = new yyFlexLexer;
-  }
+  ParserTest() { }
   void ScanString(std::string string) {
-    std::stringstream ss;
-    ss.str(string);
-    lexer->yyrestart(&ss); 
+    std::stringstream* ss = new std::stringstream;
+    ss->str(string);
+    lexer = new tlang::Lexer(ss);
   }
   void ScanFile(std::string string) {
-    std::ifstream ifs(string);
-    lexer->yyrestart(&ifs); 
+    std::ifstream* ifs = new std::ifstream(string);
+    lexer = new tlang::Lexer(ifs); 
   }
-  int GetToken() { return lexer->yylex(); } 
+  Token GetToken() { return lexer->get_next_token().token(); }
+  LexerOutput GetOutput() { return lexer->get_next_token(); }
 private:
-  FlexLexer *lexer; 
+  tlang::Lexer *lexer; 
 };
 
 #define ParserTest(name) TEST_F(ParserTest, name)
+#define AssertNextToken(name) ASSERT_THAT(GetToken(), Eq(name))
+#define AssertNextTokenNot(name) ASSERT_THAT(GetToken(), Ne(name))
 
+/*
 ParserTest(LexingStillWorks) {
   ScanString("let testID := 4");
-  int token; 
-  token = GetToken(); EXPECT_THAT(token, Eq(LET));
-  token = GetToken(); EXPECT_THAT(token, Eq(ID)); EXPECT_THAT(strcmp(yylval.sval, "testID"), Eq(0));
+  AssertNextToken(Token::LET);
+  AssertNextToken(Token::ID);
+  EXPECT_THAT(strcmp(yylval.sval, "testID"), Eq(0));
   token = GetToken(); EXPECT_THAT(token, Eq(ASSIGN));
   token = GetToken(); EXPECT_THAT(token, Eq(INT)); EXPECT_THAT(yylval.ival, Eq(4)); 
 }
@@ -313,7 +323,7 @@ ParserTestAcceptsTestCase(test47);
 ParserTestAcceptsTestCase(test48);
 ParserTestRejectsTestCase(test49);
 
-
+*/
 
 
 

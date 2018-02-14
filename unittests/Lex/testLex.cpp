@@ -229,7 +229,7 @@ TESTLEX(LexParens) {
   AssertNextToken(Token::RPAREN);
 }
 
-/*
+
 TESTLEX(TestNumbersAreStored) { 
   // if (10 > 20) then 30 else 40
   std::string filename = PathFromFilename("test8.tig");
@@ -268,7 +268,7 @@ TESTLEX(TestNumbersAreBeingCheckedProperly) {
   token = GetToken(); a_tok_equal(ELSE);
   token = GetToken(); a_tok_equal(INT); ASSERT_THAT(yylval.ival, Ne(10)); 
 }
-
+/*
 #define TestLex(name) TESTLEX(name)
 
 #define ExpectNextTokStr(tok,str) token = GetToken(); a_tok_equal(tok); \

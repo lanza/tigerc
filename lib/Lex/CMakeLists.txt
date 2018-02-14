@@ -14,10 +14,12 @@ add_custom_target(Lexer ALL
     ${CMAKE_BINARY_DIR}/lib/Lex/Lexer.cpp 
     ${CMAKE_BINARY_DIR}/include/tigerc/Lex/Lexer.h
   SOURCES Lexer.l 
+  DEPENDS Parser
 )
 
 include_directories(${CMAKE_BINARY_DIR}/include)
   
 add_dependencies(Lexer Parser)
 add_library(tigercLex ${CMAKE_BINARY_DIR}/lib/Lex/Lexer.cpp)
+add_dependencies(tigercLex Lexer)
 target_link_libraries(tigercLex tigercSupport tigercInterpreter)

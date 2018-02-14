@@ -8,6 +8,7 @@ file(MAKE_DIRECTORY
   ${CMAKE_BINARY_DIR}/lib/Parse
   ${CMAKE_BINARY_DIR}/include/tigerc/Parse
   )
+
 add_custom_target(Parser ALL
   COMMAND 
     /usr/local/bin/bison 
@@ -33,4 +34,5 @@ add_custom_target(Parser ALL
 include_directories(${CMAKE_BINARY_DIR}/include)
 
 add_library(tigercParse ${CMAKE_BINARY_DIR}/lib/Parse/Parser.cpp)
+add_dependencies(tigercParse Parser)
 target_link_libraries(tigercParse tigercSupport tigercInterpreter)

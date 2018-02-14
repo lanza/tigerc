@@ -46,6 +46,10 @@ void AssertNextOutputInt(LexerOutput output, Token name, int value) {
   ASSERT_THAT(output.token(), Eq(name)); 
   ASSERT_THAT(output.value.as<int>(), Eq(value));
 }
+void AssertNextOutputNotInt(LexerOutput output, Token name, int value) {
+  ASSERT_THAT(output.token(), Eq(name)); 
+  ASSERT_THAT(output.value.as<int>(), Ne(value));
+}
 
 TESTLEX(ForStringReturnsForToken) {
   ScanString("for"); 
@@ -235,50 +239,44 @@ TESTLEX(TestNumbersAreStored) {
   std::string filename = PathFromFilename("test8.tig");
   ScanFile(filename);
 
-  LexerOutput Output;
   AssertNextToken(Token::IF);
-  Output = GetOutput();
-  AssertNextToken(Output, Token::LPAREN);
-  AssertNextOutputInt(Token::INT, 10);
+  AssertNextToken(Token::LPAREN);
+  AssertNextOutputInt(GetOutput(), Token::INT, 10);
   AssertNextToken(Token::GT);
-  AssertNextOutputInt(Token::INT, 20);
+  AssertNextOutputInt(GetOutput(), Token::INT, 20);
   AssertNextToken(Token::RPAREN);
   AssertNextToken(Token::THEN);
-  AssertNextOutputInt(Token::INT, 30);
+  AssertNextOutputInt(GetOutput(), Token::INT, 30);
   AssertNextToken(Token::ELSE);
-  AssertNextOutputInt(Token::INT, 40);
+  AssertNextOutputInt(GetOutput(), Token::INT, 40);
 }
 
 
 TESTLEX(TestNumbersAreBeingCheckedProperly) { 
   // if (10 > 20) then 30 else 40
-  char *filename = PathFromFilename("test8.tig");
+  std::string filename = PathFromFilename("test8.tig");
   ScanFile(filename);
 
-  int token;
 
-  token = GetToken(); a_tok_equal(IF);
-  token = GetToken(); a_tok_equal(LPAREN);
-  token = GetToken(); a_tok_equal(INT); ASSERT_THAT(yylval.ival, Ne(40));
-  token = GetToken(); a_tok_equal(GT);
-  token = GetToken(); a_tok_equal(INT); ASSERT_THAT(yylval.ival, Ne(30));
-  token = GetToken(); a_tok_equal(RPAREN);
-  token = GetToken(); a_tok_equal(THEN);
-  token = GetToken(); a_tok_equal(INT); ASSERT_THAT(yylval.ival, Ne(20));
-  token = GetToken(); a_tok_equal(ELSE);
-  token = GetToken(); a_tok_equal(INT); ASSERT_THAT(yylval.ival, Ne(10)); 
+  AssertNextToken(Token::IF);
+  AssertNextToken(Token::LPAREN);
+  AssertNextOutputNotInt(GetOutput(), Token::INT, 40);
+  AssertNextToken(Token::GT);
+  AssertNextOutputNotInt(GetOutput(), Token::INT, 30);
+  AssertNextToken(Token::RPAREN);
+  AssertNextToken(Token::THEN);
+  AssertNextOutputNotInt(GetOutput(), Token::INT, 20);
+  AssertNextToken(Token::ELSE);
+  AssertNextOutputNotInt(GetOutput(), Token::INT, 10); 
 }
-/*
-#define TestLex(name) TESTLEX(name)
 
-#define ExpectNextTokStr(tok,str) token = GetToken(); a_tok_equal(tok); \
-                                          if (strlen(str) > 0) EXPECT_THAT(strcmp(yylval.sval,str), 0)
-#define ExpectNextTok(tok) ExpectNextTokStr(tok,"")
+template <class T>
+void AssertNextOutput(LexerOutput output, Token name, T value) {
+  ASSERT_THAT(output.token(), Eq(name)); 
+  ASSERT_THAT(output.value.as<T>(), Eq(value));
+}
 
-#define StartFile(name) ScanFile(PathFromFilename(name))
-
-TestLex(StringsAreStoredProperly) {
-  */
+TESTLEX(StringsAreStoredProperly) {
   /* let
    *	 type rectype = {name:string, age:int}
    *	 var rec1:rectype := rectype {name="Nobody", age=1000}
@@ -287,30 +285,25 @@ TestLex(StringsAreStoredProperly) {
    *	 rec1
    * end
    */ 
-  /*
-  StartFile("test3.tig");
+  std::string filename = PathFromFilename("test3.tig");
+  ScanFile(filename);
 
   int token;
 
-  ExpectNextTok(LET);
-  ExpectNextTok(TYPE);
-  ExpectNextTokStr(ID, "rectype");
-  ExpectNextTok(EQ);
-  ExpectNextTok(LBRACE);
-  ExpectNextTokStr(ID, "name");
-  ExpectNextTok(COLON);
-  ExpectNextTokStr(ID, "string");
-  ExpectNextTok(COMMA);
-  ExpectNextTokStr(ID, "age");
-  ExpectNextTok(COLON);
-  ExpectNextTokStr(ID, "int");
-  ExpectNextTok(RBRACE);
+  AssertNextToken(Token::LET);
+  AssertNextToken(Token::TYPE);
+  AssertNextOutput<std::string>(GetOutput(), Token::ID, "rectype");
+  AssertNextToken(Token::EQ);
+  AssertNextToken(Token::LBRACE);
+  AssertNextOutput<std::string>(GetOutput(), Token::ID, "name");
+  AssertNextToken(Token::COLON);
+  AssertNextOutput<std::string>(GetOutput(), Token::ID, "string");
+  AssertNextToken(Token::COMMA);
+  AssertNextOutput<std::string>(GetOutput(), Token::ID, "age");
+  AssertNextToken(Token::COLON);
+  AssertNextOutput<std::string>(GetOutput(), Token::ID, "int");
+  AssertNextToken(Token::RBRACE);
 }
-
-*/
-
-
-
 
 
 

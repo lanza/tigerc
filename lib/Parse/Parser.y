@@ -109,7 +109,7 @@ decls:
      | decl decls
      ;
 
-decl: vardecl
+decl: vardecl { ; }
     | funcdecl
     | typedecl
     ;
@@ -137,7 +137,7 @@ tyfieldTail:
 tyfieldArchType: ID COLON typeid
                ;
 
-vardecl: VAR ID ASSIGN exp
+vardecl: VAR ID ASSIGN exp { ; }
        | VAR ID COLON typeid ASSIGN exp
        ;
 
@@ -145,7 +145,7 @@ funcdecl: FUNCTION ID LPAREN tyfield RPAREN EQ exp
         | FUNCTION ID LPAREN tyfield RPAREN COLON typeid EQ exp
         ;
 
-exp: LET decls IN optionalexplistsemicolon END 
+exp: LET decls IN optionalexplistsemicolon END { ; }
    | arrayLHS firstRHSs
    | dotLHS rhss
    | ID

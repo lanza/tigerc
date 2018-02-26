@@ -19,317 +19,300 @@ using namespace testing;
 typedef tlang::Parser::token::yytokentype Token;
 typedef tlang::Parser::symbol_type LexerOutput;
 
-class ParserTest: public ::testing::Test {
+class TestParser: public ::testing::Test {
 
 public:
-  ParserTest() { }
+  TestParser() { }
   void ScanString(std::string string) {
     std::stringstream* ss = new std::stringstream;
     ss->str(string);
     lexer = new tlang::Lexer(ss);
+    parser = new tlang::Parser(*lexer);
   }
   void ScanFile(std::string string) {
     std::ifstream* ifs = new std::ifstream(string);
     lexer = new tlang::Lexer(ifs); 
+    parser = new tlang::Parser(*lexer);
   }
   Token GetToken() { return lexer->get_next_token().token(); }
   LexerOutput GetOutput() { return lexer->get_next_token(); }
-private:
+
+  friend class tlang::Parser;
   tlang::Lexer *lexer; 
+  tlang::Parser *parser;
 };
 
-#define ParserTest(name) TEST_F(ParserTest, name)
+#define TestParser(name) TEST_F(TestParser, name)
 #define AssertNextToken(name) ASSERT_THAT(GetToken(), Eq(name))
 #define AssertNextTokenNot(name) ASSERT_THAT(GetToken(), Ne(name))
 
-/*
-ParserTest(LexingStillWorks) {
-  ScanString("let testID := 4");
-  AssertNextToken(Token::LET);
-  AssertNextToken(Token::ID);
-  EXPECT_THAT(strcmp(yylval.sval, "testID"), Eq(0));
-  token = GetToken(); EXPECT_THAT(token, Eq(ASSIGN));
-  token = GetToken(); EXPECT_THAT(token, Eq(INT)); EXPECT_THAT(yylval.ival, Eq(4)); 
-}
+#define ExpectSuccess() EXPECT_THAT(parser->parse(), Eq(0))
+#define ExpectFail() EXPECT_THAT(parser->parse(), Ne(0))
 
-#define ExpectParse() EXPECT_THAT(yyparse(), Eq(0))
-#define ExpectFail() EXPECT_THAT(yyparse(), Ne(0))
 
-ParserTest(AcceptsVarDecls) {
+
+TestParser(AcceptsVarDecls) {
   ScanString("let var muffin := 4 in end"); 
-  ExpectParse(); 
+  ExpectSuccess(); 
 }
 
-ParserTest(AcceptsVarDeclsWithTypeId) {
+TestParser(AcceptsVarDeclsWithTypeId) {
   ScanString("let var muffin : int := 4 in end");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsFuncDecl) {
+TestParser(AcceptsFuncDecl) {
   ScanString("let function doSomething ( ) = 4 in end");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsTypeDecl) {
+TestParser(AcceptsTypeDecl) {
   ScanString("let type person = int in end");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsTypeDeclWithArrayOf) {
+TestParser(AcceptsTypeDeclWithArrayOf) {
   ScanString("let type person = array of int in end");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsTypeDeclWithEmptyBraces) {
+TestParser(AcceptsTypeDeclWithEmptyBraces) {
   ScanString("let type person = { } in end");
-  ExpectParse();
+  ExpectSuccess();
 }
-ParserTest(AcceptsTypeDeclWithBracesContainingAIDTypeIdPair) {
+TestParser(AcceptsTypeDeclWithBracesContainingAIDTypeIdPair) {
   ScanString("let type person = { name : string } in end");
-  ExpectParse();
+  ExpectSuccess();
 }
-ParserTest(AcceptsTypeDeclWithBracesContainingMultipleIDTypeIdPairs) {
+TestParser(AcceptsTypeDeclWithBracesContainingMultipleIDTypeIdPairs) {
   ScanString("let type person = { name : string , age : int } in end");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsMultipleVarDecls) {
+TestParser(AcceptsMultipleVarDecls) {
   ScanString("let var muffin := 4 \n var riley := 2 in end");
-  ExpectParse();
+  ExpectSuccess();
 }
   
-ParserTest(AcceptsNil) {
+TestParser(AcceptsNil) {
   ScanString("nil");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsFuncWithTyFields) {
+TestParser(AcceptsFuncWithTyFields) {
   ScanString("let function doSomething ( name : string , age : int ) = 4 in end");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsFuncWithTyFieldsAndTypeId) {
+TestParser(AcceptsFuncWithTyFieldsAndTypeId) {
   ScanString("let function doSomething ( name : string , age : int ) : int = 4 in end");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsTwoExpInParen) {
+TestParser(AcceptsTwoExpInParen) {
   ScanString("(4; 32)");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsEmptyParens) {
+TestParser(AcceptsEmptyParens) {
   ScanString("( )");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsEmptyLet) {
+TestParser(AcceptsEmptyLet) {
   ScanString("let var muffin := 4 in end");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsPlainString) {
+TestParser(AcceptsPlainString) {
   ScanString("\"muffin\"");
-  ExpectParse();
+  ExpectSuccess();
   //TODO: add the escape characters
 }
 
-ParserTest(AcceptsUnaryMinus) {
+TestParser(AcceptsUnaryMinus) {
   ScanString("-4");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsEmptyFunctionCall) {
+TestParser(AcceptsEmptyFunctionCall) {
   ScanString("doSomething()");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsFunctionCallWithTwoArgs) {
+TestParser(AcceptsFunctionCallWithTwoArgs) {
   ScanString("doSomething(3, 4)");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsAnExpListOfOps) {
+TestParser(AcceptsAnExpListOfOps) {
   ScanString("(4 + 4; 4 - 4; 4 * 4; 4 / 4; 4 != 4; 4 > 4; 4 >= 4; 4 < 4; 4 <= 4; 4 and 4; 4 or 4; 4 = 4; 4 <> 4 )");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsRecordCreation) {
+TestParser(AcceptsRecordCreation) {
   ScanString("person { age = 24, name = \"Nathan\" }");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsTrickyRecordCreation) {
+TestParser(AcceptsTrickyRecordCreation) {
   ScanString("person { age = ageo, name = nameo }");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-
-
-ParserTest(AcceptsArrayInit) {
+TestParser(AcceptsArrayInit) {
   ScanString("int[4] of 2");
-  ExpectParse();
+  ExpectSuccess();
 } 
 
 // dots and arrays
-ParserTest(AcceptsOneDot) {
+TestParser(AcceptsOneDot) {
   ScanString("dog.muffin");
-  ExpectParse();
+  ExpectSuccess();
 }
-ParserTest(AcceptsOneDotAssign) {
+TestParser(AcceptsOneDotAssign) {
   ScanString("dog.muffin := 4");
-  ExpectParse();
+  ExpectSuccess();
 }
-ParserTest(AcceptsChainedDots) {
+TestParser(AcceptsChainedDots) {
   ScanString("dog.muffin.name.first");
-  ExpectParse();
+  ExpectSuccess();
 }
-ParserTest(AcceptsChainedDotsAssign) {
+TestParser(AcceptsChainedDotsAssign) {
   ScanString("dog.muffin.name.first := 4");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsOneArray) {
+TestParser(AcceptsOneArray) {
   ScanString("muffin[0]");
-  ExpectParse(); 
+  ExpectSuccess(); 
 }
 
-ParserTest(AcceptsArrayAssign) {
+TestParser(AcceptsArrayAssign) {
   ScanString("muffin[0] := 14");
-  ExpectParse();
+  ExpectSuccess();
 } 
-ParserTest(AcceptsChainedArray) {
+TestParser(AcceptsChainedArray) {
   ScanString("riley[0][0][0]");
-  ExpectParse();
+  ExpectSuccess();
 }
-ParserTest(AcceptsChainedArrayAssign) {
+TestParser(AcceptsChainedArrayAssign) {
   ScanString("riley[0][0][0] := 14");
-  ExpectParse();
+  ExpectSuccess();
 }
-ParserTest(AcceptsMixedArrayAndDots) {
+TestParser(AcceptsMixedArrayAndDots) {
   ScanString("riley[0].muffin[3].belle[1][2].eric.kristin");
-  ExpectParse();
+  ExpectSuccess();
 }
-ParserTest(AcceptsMixedArrayAndDotsAssign) {
+TestParser(AcceptsMixedArrayAndDotsAssign) {
   ScanString("riley[0].muffin[3].belle[1][2].eric.kristin := 22");
-  ExpectParse();
+  ExpectSuccess();
 }
 
-ParserTest(AcceptsMixedArrayAndDotsOfType) {
+TestParser(AcceptsMixedArrayAndDotsOfType) {
   ScanString("riley[0].muffin[3].belle[1][2].eric.kristin[2] of int");
   ExpectFail();
 }
 
-ParserTest(RejectsDotAssign) {
+TestParser(RejectsDotAssign) {
   ScanString("muffin.dog of int");
   ExpectFail();
 }
 
-ParserTest(RejectsIDAssign) {
+TestParser(RejectsIDAssign) {
   ScanString("muffin of int");
   ExpectFail();
 }
 
-#define ExpectGood(string) ScanString(string); ExpectParse()
+#define ExpectGood(string) ScanString(string); ExpectSuccess()
 
-ParserTest(AcceptsIfThen) {
+TestParser(AcceptsIfThen) {
   ExpectGood("if 3 then 4");
 }
 
-ParserTest(AcceptsIfThenElse) {
+TestParser(AcceptsIfThenElse) {
   ExpectGood("if 3 then 4 else 5");
 }
 
-ParserTest(AcceptsWhileDo) {
+TestParser(AcceptsWhileDo) {
   ExpectGood("while 3 do 4");
 }
 
-ParserTest(AcceptsForExp) {
+TestParser(AcceptsForExp) {
   ExpectGood("for num := 0 to 10 do 5");
 }
 
-ParserTest(AcceptsBreakInFor) {
+TestParser(AcceptsBreakInFor) {
   ExpectGood("for num := 0 to 10 do break");
 }
 
-ParserTest(AcceptsMultipleExpInLet) {
+TestParser(AcceptsMultipleExpInLet) {
   ExpectGood("let var q := 4 in 3; 4; 5; 6 end");
 }
 
-ParserTest(AcceptsExpInParen) {
+TestParser(AcceptsExpInParen) {
   ExpectGood("(4)");
 }
-
 #define StartFile(name) ScanFile(PathFromFilename(name))
 
-#define ParserTestAcceptsTestCase(name) ParserTest(name) { \
-  StartFile(#name".tig"); \
-  ExpectParse(); \
+#define TestParserAcceptsTestCase(name) TestParser(name) { \
+  std::string q = PathFromFilename(#name".tig"); \
+  ScanFile(q); \
+  ExpectSuccess(); \
 }
-#define ParserTestRejectsTestCase(name) ParserTest(name) { \
+#define TestParserRejectsTestCase(name) TestParser(name) { \
   StartFile(#name".tig"); \
   ExpectFail(); \
 }
 
-ParserTestAcceptsTestCase(merge);
-ParserTestAcceptsTestCase(queens); 
-ParserTestAcceptsTestCase(test1);
-ParserTestAcceptsTestCase(test2);
-ParserTestAcceptsTestCase(test3);
-ParserTestAcceptsTestCase(test4);
-ParserTestAcceptsTestCase(test5);
-ParserTestAcceptsTestCase(test6);
-ParserTestAcceptsTestCase(test7);
-ParserTestAcceptsTestCase(test8);
-ParserTestAcceptsTestCase(test9);
-ParserTestAcceptsTestCase(test10); 
-ParserTestAcceptsTestCase(test11);
-ParserTestAcceptsTestCase(test12);
-ParserTestAcceptsTestCase(test13);
-ParserTestAcceptsTestCase(test14);
-ParserTestAcceptsTestCase(test15);
-ParserTestAcceptsTestCase(test16);
-ParserTestAcceptsTestCase(test17);
-ParserTestAcceptsTestCase(test18);
-ParserTestAcceptsTestCase(test19);
-ParserTestAcceptsTestCase(test20);
-ParserTestAcceptsTestCase(test21);
-ParserTestAcceptsTestCase(test22);
-ParserTestAcceptsTestCase(test23);
-ParserTestAcceptsTestCase(test24);
-ParserTestAcceptsTestCase(test25);
-ParserTestAcceptsTestCase(test26);
-ParserTestAcceptsTestCase(test27);
-ParserTestAcceptsTestCase(test28);
-ParserTestAcceptsTestCase(test29);
-ParserTestAcceptsTestCase(test30);
-ParserTestAcceptsTestCase(test31);
-ParserTestAcceptsTestCase(test32);
-ParserTestAcceptsTestCase(test33);
-ParserTestAcceptsTestCase(test34);
-ParserTestAcceptsTestCase(test35);
-ParserTestAcceptsTestCase(test36);
-ParserTestAcceptsTestCase(test37);
-ParserTestAcceptsTestCase(test38);
-ParserTestAcceptsTestCase(test39);
-ParserTestAcceptsTestCase(test40);
-ParserTestAcceptsTestCase(test41);
-ParserTestAcceptsTestCase(test42);
-ParserTestAcceptsTestCase(test43);
-ParserTestAcceptsTestCase(test44);
-ParserTestAcceptsTestCase(test45);
-ParserTestAcceptsTestCase(test46);
-ParserTestAcceptsTestCase(test47);
-ParserTestAcceptsTestCase(test48);
-ParserTestRejectsTestCase(test49);
-
-*/
-
-
-
-
-
-
-
-
-
+TestParserAcceptsTestCase(merge);
+TestParserAcceptsTestCase(queens); 
+TestParserAcceptsTestCase(test1);
+TestParserAcceptsTestCase(test2);
+TestParserAcceptsTestCase(test3);
+TestParserAcceptsTestCase(test4);
+TestParserAcceptsTestCase(test5);
+TestParserAcceptsTestCase(test6);
+TestParserAcceptsTestCase(test7);
+TestParserAcceptsTestCase(test8);
+TestParserAcceptsTestCase(test9);
+TestParserAcceptsTestCase(test10); 
+TestParserAcceptsTestCase(test11);
+TestParserAcceptsTestCase(test12);
+TestParserAcceptsTestCase(test13);
+TestParserAcceptsTestCase(test14);
+TestParserAcceptsTestCase(test15);
+TestParserAcceptsTestCase(test16);
+TestParserAcceptsTestCase(test17);
+TestParserAcceptsTestCase(test18);
+TestParserAcceptsTestCase(test19);
+TestParserAcceptsTestCase(test20);
+TestParserAcceptsTestCase(test21);
+TestParserAcceptsTestCase(test22);
+TestParserAcceptsTestCase(test23);
+TestParserAcceptsTestCase(test24);
+TestParserAcceptsTestCase(test25);
+TestParserAcceptsTestCase(test26);
+TestParserAcceptsTestCase(test27);
+TestParserAcceptsTestCase(test28);
+TestParserAcceptsTestCase(test29);
+TestParserAcceptsTestCase(test30);
+TestParserAcceptsTestCase(test31);
+TestParserAcceptsTestCase(test32);
+TestParserAcceptsTestCase(test33);
+TestParserAcceptsTestCase(test34);
+TestParserAcceptsTestCase(test35);
+TestParserAcceptsTestCase(test36);
+TestParserAcceptsTestCase(test37);
+TestParserAcceptsTestCase(test38);
+TestParserAcceptsTestCase(test39);
+TestParserAcceptsTestCase(test40);
+TestParserAcceptsTestCase(test41);
+TestParserAcceptsTestCase(test42);
+TestParserAcceptsTestCase(test43);
+TestParserAcceptsTestCase(test44);
+TestParserAcceptsTestCase(test45);
+TestParserAcceptsTestCase(test46);
+TestParserAcceptsTestCase(test47);
+TestParserAcceptsTestCase(test48);
+TestParserRejectsTestCase(test49);

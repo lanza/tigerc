@@ -9,6 +9,10 @@ project(tigerc CXX)
 
 include_directories(
   ${CMAKE_SOURCE_DIR}/include 
+  ${CMAKE_SOURCE_DIR}/cget/include
+)
+link_directories(
+  ${CMAKE_SOURCE_DIR}/cget/lib
 )
 
 enable_testing()

@@ -214,7 +214,7 @@ TESTLEX(TestFilesTwoAndThreeReturnNoIllegalTokens) {
     "test3.tig",
     "test4.tig",
     "test5.tig",
-    "test9.tig",
+    "test9.tig"
   };
   for (auto s : files) {
     auto f = PathFromFilename(s);
@@ -305,12 +305,15 @@ TESTLEX(StringsAreStoredProperly) {
   AssertNextToken(Token::RBRACE);
 }
 
-
-
-
-
-
-
-
-
-
+TESTLEX(CanLexMerge) {
+  std::vector<std::string> files = {
+    "merge.tig"
+  };
+  for (auto s : files) {
+    auto f = PathFromFilename(s);
+    ScanFile(f);
+    Token t;
+    while ((t = GetToken()) != Token::ENDOFFILE) 
+      ASSERT_THAT(t, Ne(Token::ILLEGAL));
+  }
+}

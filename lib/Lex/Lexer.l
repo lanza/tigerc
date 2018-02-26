@@ -45,7 +45,7 @@ int charPos=1;
 <INSTRING>\"                       { ADJUST(); BEGIN(INITIAL); 
                                      return tlang::Parser::make_STRING(yytext, tlang::location()); 
                                    } 
-<INSTRING>[a-zA-Z]
+<INSTRING>[a-zA-Z0-9\\\-_\.?,]
 <INSTRING>" "
 <INSTRING><<EOF>>                  { ADJUST(); EM_error(EM_tokPos, "unterminated string literal"); 
                                      tlang::Parser::make_ENDOFFILE(tlang::location());
